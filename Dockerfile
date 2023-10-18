@@ -11,12 +11,14 @@ RUN pip install pandas && \
 # Run step
 FROM python:3.9-slim AS runner
 
-EXPOSE 8050
-
 WORKDIR /app
 
 COPY --from=builder /app/file_to_run_app.csv /app/
 
 COPY . .
+
+RUN useradd -m myuser
+
+USER myuser
 
 CMD ["python", "app.py", "file_to_run_app.csv"]
